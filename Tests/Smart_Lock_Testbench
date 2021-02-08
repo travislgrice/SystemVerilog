@@ -1,0 +1,49 @@
+`timescale 1ns / 1ps
+module static Smart_Lock_Testbench;
+    module Smart_Lock(keys, activate, fail_led, pass_led);
+        input logic unsigned [9:0] keys;
+        input logic unsigned activate;
+        output logic unsigned fail_led;
+        output logic unsigned pass_led;
+        // hardcoded passcode
+        localparam passcode = 10'b1111100000; // BCD 98765
+        reg unsigned [9:0] pressed;
+        int attempts = 0;
+        assign pass_led = (activate && pressed == passcode);
+        assign fail_led = ~pass_led;
+        
+        always_latch begin
+            if (attempts < 5) begin
+                pressed <= keys;
+                attempts++;
+            end else begin
+                pressed <= 0;
+                attempts <= 0;
+            end
+        end
+        
+    endmodule: Smart_Lock;
+
+    logic unsigned [9:0] test_keys;
+    logic activate;
+    logic pass;
+    logic fail;
+    
+    Smart_Lock smart_lock(
+        .keys(test_keys),
+        .activate(activate),
+        .fail_led(fail),
+        .pass_led(pass)
+    );
+    
+    initial begin
+        test_keys[9] = 1'b1; #10;
+        test_keys[8] = 1'b1; #10;
+        test_keys[7] = 1'b1; #10;
+        test_keys[6] = 1'b1; #10;
+        test_keys[5] = 1'b1; #10;
+        activate = 1'b1; #10;
+        $finish;
+    end
+    
+endmodule: Smart_Lock_Testbench
