@@ -4,7 +4,11 @@
 /* The module is the basic building block for designs. */
 module Testbench(logic clock);
     localparam default_opcode = 5'b11010;
-    /* Modules can contain hierarchies of other modules... */
+
+    //////////////////////////////////////////////////////////////////////////////
+    /* Modules can contain hierarchies of other modules...                      */
+    //////////////////////////////////////////////////////////////////////////////
+    /*  */
     bit unsigned [4:0] opcode;
     bit unsigned [15:5] address;
     string debug_msg;
@@ -19,7 +23,9 @@ module Testbench(logic clock);
         endmodule: Encoder
     endmodule: Adapter
     
+    ///////////////
     /*... nets.. */
+    ///////////////
     wire [9:0] primary_connection;
     reg a, b, c;
     
@@ -28,9 +34,13 @@ module Testbench(logic clock);
     integer mode;
     Adapter adapter();
     
+    //////////////////////////////////
     /*... subroutine declarations.. */
+    //////////////////////////////////
     
+    ///////////////////////////////////////////////////////////////////////
     /*... and procedural statements within always and initial procedures.*/
+    ///////////////////////////////////////////////////////////////////////
     initial begin
         opcode = default_opcode;
         debug_msg = "No error discovered.";
@@ -67,7 +77,7 @@ module Testbench(logic clock);
         error = 1'b0;
         debug_msg = "No error discovered.";
     endtask: reset
-    
+    //////////////////////////////////////////////////////////////////////////////
     /* However,  for  the  testbench, the emphasis is not in the hardware-level */
     /* details such  as wires,  structural heirarchy, and interconnects, but in */
     /* modeling the complete  environment  in  which  a design is verified. The */
@@ -75,7 +85,7 @@ module Testbench(logic clock);
     /* races  between  the design and the testbench, automating the generations */
     /* of input stimuli, and  reusing existing models and other infrastructure. */
     /* See                 notes                 on                 "Programs". */
-    
+    //////////////////////////////////////////////////////////////////////////////
     
 endmodule
 
@@ -122,6 +132,9 @@ import data_package::*;
     // program items go here.
 endprogram: data_process
 
+///////////////////////////////////////////////////////////////////////////////////
+/* These are a couple of examples (more or less) from the IEEE 1800 specification*/
+///////////////////////////////////////////////////////////////////////////////////
 program test(input clk, input [16:1] addr, inout [7:0] data);
     initial begin
         // some initializations go here
